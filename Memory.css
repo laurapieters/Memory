@@ -1,0 +1,29 @@
+* {
+    outline: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+img {
+    width: 110px;
+    height: 110px;
+    border: 2px solid black;
+    padding: 10px 10px;
+    border-radius: 10px;
+    margin: 10px 10px;
+    background: white;
+}
+
+#background {
+    text-align: center;
+}
+
+#board {
+    text-align: center;
+}
+
+.turned {
+    background: red;
+}
