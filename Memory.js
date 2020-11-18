@@ -1,48 +1,80 @@
 function playGame(){
-    let board = document.createElement('div');
-    board.setAttribute('id', 'board');
-    board = layCards(board);
-    document.body.appendChild(board);
-}
-
-function yourTurn(board){
-    const card1 = 0;
-    const card2 = 0;
+    let board = new Board();
 
 }
 
-function layCards(board){
-    let ids = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
-    ids = shuffle(ids);
-    for(let i = 0; i < ids.length; i++){
-        const card = new Card(ids[i], board);
-        if((i+1) % 5 == 0){
-            const br = document.createElement('br');
-            board.appendChild(br);
+class Board{
+    constructor(){
+        this.cards = this.makeBoard();
+        this.turnedCards = [];
+        this.playedCards = 0;
+    }
+
+    onTurnCallback = (card) => {
+        this.turnedCards.push(card);
+        if (this.turnedCards.length === 2) {
+            // check for match
+            if (this.turnedCards[0].getId() === this.turnedCards[1].getId()) {
+                console.log('match');
+                this.turnedCards = [];
+                this.playedCards += 2;
+            } else {
+                console.log('no match');
+                this.turnedCards[0].turnBack();
+                this.turnedCards[1].turnBack();
+                this.turnedCards = [];
+            }
         }
     }
-    return board;
+
+    makeBoard(){
+        const cards = [];
+        let board = document.createElement('div');
+        board.setAttribute('id', 'board');
+        let ids = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
+        ids = shuffle(ids);
+        for(let i = 0; i < ids.length; i++){
+            const card = new Card(ids[i],this.onTurnCallback);
+            cards.push(card);
+            board.appendChild(card.createCard());
+            if((i+1) % 5 == 0){
+                const br = document.createElement('br');
+                board.appendChild(br);
+            }
+        }
+        document.body.appendChild(board);
+        return cards;
+    }
+
 }
 
 class Card{
-    constructor(id, board) {
-        this.board = board;
+    constructor(id, onTurnCallback) {
         this.id = id;
         this.src = this.getImageSrc();
         this.image = document.createElement('img');
-        this.createCard();
+        this.onTurnCallback = onTurnCallback;
     }
 
     createCard(){
-        this.image.setAttribute('id', this.id);
+        this.image.setAttribute('data-id', this.id);
         this.image.setAttribute('src', 'Images/backgroundCard.png');
         this.image.onclick = this.turnCard;
-        this.board.appendChild(this.image);
+        return this.image;
     }
 
     turnCard = () => {
-        console.log('turned');
         this.image.setAttribute('src', this.src);
+        this.image.setAttribute('class', 'turn');
+        this.onTurnCallback(this);
+    }
+
+    getId(){
+        return this.id;
+    }
+
+    turnBack(){
+        this.image.setAttribute('src', 'Images/backgroundCard.png');
     }
 
     getImageSrc(){
