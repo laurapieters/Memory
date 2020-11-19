@@ -95,7 +95,7 @@ class Board{
         let board = document.createElement('div');
         board.setAttribute('id', 'board');
         let ids = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
-        // ids = shuffle(ids);
+        ids = shuffle(ids);
         for(let i = 0; i < ids.length; i++){
             const card = new Card(ids[i],this.onTurnCallback);
             cards.push(card);
