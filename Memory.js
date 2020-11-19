@@ -12,6 +12,9 @@ class Board{
         this.nrOfTurns = 0;
         this.firstClick = false;
         this.secondClick = false;
+        this.foundPairs = 0;
+        this.remainingCards = this.cards;
+        this.frozenCards = [];
     }
 
     onTurnCallback = (card) => {
@@ -30,27 +33,38 @@ class Board{
         if (this.turnedCards.length === 2) {
             // check for match
             if (this.turnedCards[0].getId() === this.turnedCards[1].getId()) {
-                setTimeout(() => {
-                    document.getElementById("message").innerHTML = 'Match!';
-                    setTimeout(() => {
-                        this.unfreezeAllCards();
-                        document.getElementById("message").innerHTML = 'Turn first card';
-                    },1000);
-                },500);
+                // updating
+                this.frozenCards.push(this.turnedCards[0]);
+                this.frozenCards.push(this.turnedCards[1]);
                 this.turnedCards = [];
                 this.nrOfTurns++;
+                this.foundPairs++;
+
+                // messages
+                document.getElementById("message").innerHTML = 'Match!';
+                    setTimeout(() => {
+                        this.unfreezeRemainingCards();
+                        if(this.foundPairs === 10){
+                            document.getElementById("message").innerHTML = 'The game is finished';
+                        }else{
+                            document.getElementById("message").innerHTML = 'Turn first card';
+                        }
+
+                    },1000);
                 document.getElementById("nrOfTurns").innerHTML = 'Number of turns: '+this.nrOfTurns;
+
             } else {
+                document.getElementById("message").innerHTML = 'No match :(';
                 setTimeout(() => {
-                    document.getElementById("message").innerHTML = 'no match :(';
-                },5000);
+                    document.getElementById("message").innerHTML = 'Remember your cards';
+                },1000);
                 setTimeout(() => {
                     this.turnedCards[0].turnBack();
                     this.turnedCards[1].turnBack();
                     this.turnedCards = [];
                     document.getElementById("message").innerHTML = 'Turn first card';
-                    this.unfreezeAllCards();
-                },5000);
+                    this.unfreezeRemainingCards();
+                },4000);
                 this.nrOfTurns++;
                 document.getElementById("nrOfTurns").innerHTML = 'Number of turns: '+this.nrOfTurns;
             }
@@ -63,10 +77,17 @@ class Board{
         }
     }
 
-    unfreezeAllCards(){
-        for(let i = 0; i < this.cards.length; i++){
-            this.cards[i].unfreezeCard();
+    freezeFrozenCards(){
+        for(let i = 0; i < this.frozenCards.length; i++){
+            this.frozenCards[i].freezeCard();
         }
+    }
+
+    unfreezeRemainingCards(){
+        for(let i = 0; i < this.remainingCards.length; i++){
+            this.remainingCards[i].unfreezeCard();
+        }
+        this.freezeFrozenCards();
     }
 
     makeBoard(){
@@ -74,7 +95,7 @@ class Board{
         let board = document.createElement('div');
         board.setAttribute('id', 'board');
         let ids = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10];
-        ids = shuffle(ids);
+        // ids = shuffle(ids);
         for(let i = 0; i < ids.length; i++){
             const card = new Card(ids[i],this.onTurnCallback);
             cards.push(card);
@@ -86,7 +107,6 @@ class Board{
         }
         document.body.appendChild(board);
         return cards;
-        // this.cards = cards;
     }
 
 }
@@ -108,7 +128,6 @@ class Card{
 
     turnCard = () => {
         this.image.setAttribute('src', this.src);
-        this.image.setAttribute('class', 'turn');
         this.freezeCard()
         this.onTurnCallback(this);
     }

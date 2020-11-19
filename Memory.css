@@ -41,8 +41,6 @@ img {
     border-radius: 10px;
     margin: 10px 10px;
     perspective: 1000px;
-    transform-style: preserve-3d;
-    transition: transform 0.3s;
     background-color: #df826f;
     border: none;
     /*border-style: dotted;*/
@@ -57,7 +55,3 @@ img {
 #board {
     text-align: center;
 }
-
-/*img:active{*/
-/*    transform: rotateY(180deg);*/
-/*}*/
