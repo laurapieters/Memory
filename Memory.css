@@ -3,7 +3,34 @@
 }
 
 h1 {
+    font-family: Brush Script MT;
+    font-size: 50px;
     text-align: center;
+    color: #8e0906;
+    margin: 5px 0px;
+}
+
+#message {
+    font-family: Gabriola;
+    font-size: 20px;
+    background-color: #ffd99b;
+    width: 200px;
+    padding: 2px 5px;
+    border-radius: 10px;
+    display: inline-block;
+    color: #8e0906;
+    margin-right: 10px;
+}
+
+#nrOfTurns {
+    width: 200px;
+    font-family: Gabriola;
+    font-size: 20px;
+    background-color: #ffd99b;
+    padding: 2px 5px;
+    border-radius: 10px;
+    display: inline-block;
+    color: #8e0906
 }
 
 img {
@@ -13,10 +40,14 @@ img {
     padding: 10px 10px;
     border-radius: 10px;
     margin: 10px 10px;
-    background: white;
     perspective: 1000px;
     transform-style: preserve-3d;
     transition: transform 0.3s;
+    background-color: #df826f;
+    border: none;
+    /*border-style: dotted;*/
+    /*border-color: #8e0906;*/
+    /*border-width: 4px;*/
 }
 
 #background {

@@ -1,29 +1,71 @@
 function playGame(){
     let board = new Board();
-
+    // document.body.appendChild(board.makeBoard());
+    document.getElementById("message").innerHTML = 'Turn first card';
+    document.getElementById("nrOfTurns").innerHTML = 'Number of turns: '+0;
 }
 
 class Board{
     constructor(){
         this.cards = this.makeBoard();
         this.turnedCards = [];
-        this.playedCards = 0;
+        this.nrOfTurns = 0;
+        this.firstClick = false;
+        this.secondClick = false;
     }
 
     onTurnCallback = (card) => {
+        if(this.firstClick){
+            this.secondClick = true;
+            setTimeout(() => {
+                this.freezeAllCards();
+            },1);
+            this.firstClick = false;
+        }else{
+            this.firstClick = true;
+            document.getElementById("message").innerHTML = 'Turn second card';
+        }
+
         this.turnedCards.push(card);
         if (this.turnedCards.length === 2) {
             // check for match
             if (this.turnedCards[0].getId() === this.turnedCards[1].getId()) {
-                console.log('match');
+                setTimeout(() => {
+                    document.getElementById("message").innerHTML = 'Match!';
+                    setTimeout(() => {
+                        this.unfreezeAllCards();
+                        document.getElementById("message").innerHTML = 'Turn first card';
+                    },1000);
+                },500);
                 this.turnedCards = [];
-                this.playedCards += 2;
+                this.nrOfTurns++;
+                document.getElementById("nrOfTurns").innerHTML = 'Number of turns: '+this.nrOfTurns;
             } else {
-                console.log('no match');
-                this.turnedCards[0].turnBack();
-                this.turnedCards[1].turnBack();
-                this.turnedCards = [];
+                setTimeout(() => {
+                    document.getElementById("message").innerHTML = 'no match :(';
+                },5000);
+                setTimeout(() => {
+                    this.turnedCards[0].turnBack();
+                    this.turnedCards[1].turnBack();
+                    this.turnedCards = [];
+                    document.getElementById("message").innerHTML = 'Turn first card';
+                    this.unfreezeAllCards();
+                },5000);
+                this.nrOfTurns++;
+                document.getElementById("nrOfTurns").innerHTML = 'Number of turns: '+this.nrOfTurns;
             }
+        }
+    }
+
+    freezeAllCards(){
+        for(let i = 0; i < this.cards.length; i++){
+            this.cards[i].freezeCard();
+        }
+    }
+
+    unfreezeAllCards(){
+        for(let i = 0; i < this.cards.length; i++){
+            this.cards[i].unfreezeCard();
         }
     }
 
@@ -44,6 +86,7 @@ class Board{
         }
         document.body.appendChild(board);
         return cards;
+        // this.cards = cards;
     }
 
 }
@@ -66,6 +109,7 @@ class Card{
     turnCard = () => {
         this.image.setAttribute('src', this.src);
         this.image.setAttribute('class', 'turn');
+        this.freezeCard()
         this.onTurnCallback(this);
     }
 
@@ -73,8 +117,17 @@ class Card{
         return this.id;
     }
 
+    freezeCard(){
+        this.image.onclick = null;
+    }
+
+    unfreezeCard(){
+        this.image.onclick = this.turnCard;
+    }
+
     turnBack(){
         this.image.setAttribute('src', 'Images/backgroundCard.png');
+        this.unfreezeCard()
     }
 
     getImageSrc(){
