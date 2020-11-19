@@ -14,7 +14,7 @@ h1 {
     font-family: Gabriola;
     font-size: 20px;
     background-color: #ffd99b;
-    width: 200px;
+    width: 300px;
     padding: 2px 5px;
     border-radius: 10px;
     display: inline-block;
@@ -22,16 +22,16 @@ h1 {
     margin-right: 10px;
 }
 
-#nrOfTurns {
-    width: 200px;
-    font-family: Gabriola;
-    font-size: 20px;
-    background-color: #ffd99b;
-    padding: 2px 5px;
-    border-radius: 10px;
-    display: inline-block;
-    color: #8e0906
-}
+/*#nrOfTurns {*/
+/*    width: 200px;*/
+/*    font-family: Gabriola;*/
+/*    font-size: 20px;*/
+/*    background-color: #ffd99b;*/
+/*    padding: 2px 5px;*/
+/*    border-radius: 10px;*/
+/*    display: inline-block;*/
+/*    color: #8e0906*/
+/*}*/
 
 img {
     width: 100px;
@@ -40,12 +40,8 @@ img {
     padding: 10px 10px;
     border-radius: 10px;
     margin: 10px 10px;
-    perspective: 1000px;
     background-color: #df826f;
     border: none;
-    /*border-style: dotted;*/
-    /*border-color: #8e0906;*/
-    /*border-width: 4px;*/
 }
 
 #background {

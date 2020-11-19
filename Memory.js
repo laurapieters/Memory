@@ -45,7 +45,7 @@ class Board{
                     setTimeout(() => {
                         this.unfreezeRemainingCards();
                         if(this.foundPairs === 10){
-                            document.getElementById("message").innerHTML = 'The game is finished';
+                            document.getElementById("message").innerHTML = 'You have finished the game in '+this.nrOfTurns+' turns!';
                         }else{
                             document.getElementById("message").innerHTML = 'Turn first card';
                         }
